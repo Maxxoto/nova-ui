@@ -4,6 +4,7 @@ import "./globals.css";
 import { SidebarLayout } from "@/components/sidebar-layout";
 import { AuthProvider } from "@/components/auth-provider";
 import { SessionProvider } from "@/components/session-provider";
+import { ReactQueryProvider } from "@/components/react-query-provider";
 
 const nunitoSans = Nunito_Sans({
     variable: "--font-nunito-sans",
@@ -26,13 +27,15 @@ export default function RootLayout({
             <body
                 className={`${nunitoSans.variable} antialiased`}
             >
-                <SessionProvider>
-                    <AuthProvider>
-                        <SidebarLayout>
-                            {children}
-                        </SidebarLayout>
-                    </AuthProvider>
-                </SessionProvider>
+                <ReactQueryProvider>
+                    <SessionProvider>
+                        <AuthProvider>
+                            <SidebarLayout>
+                                {children}
+                            </SidebarLayout>
+                        </AuthProvider>
+                    </SessionProvider>
+                </ReactQueryProvider>
             </body>
         </html>
     );

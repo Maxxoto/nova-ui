@@ -4,7 +4,8 @@ export async function POST(req: NextRequest) {
     try {
         const { messages } = await req.json();
 
-        const response = await fetch("http://localhost:8000/sse/chat-completion", {
+        const backendEndpoint = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+        const response = await fetch(`${backendEndpoint}/sse/chat-completion`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

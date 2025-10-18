@@ -1,6 +1,7 @@
 "use client";
 
 import { useSidebarStore } from "@/stores/sidebar-store";
+import { useChatStore } from "@/stores/chat-store";
 import { Navigation } from "./navigation";
 import { cn } from "@/lib/utils";
 
@@ -10,14 +11,15 @@ interface SidebarLayoutProps {
 
 export function SidebarLayout({ children }: SidebarLayoutProps) {
   const { isCollapsed } = useSidebarStore();
+  const { isFullscreen } = useChatStore();
 
   return (
     <div className="flex min-h-screen">
-      <Navigation />
-      <main 
+      {!isFullscreen && <Navigation />}
+      <main
         className={cn(
           "flex-1 transition-all duration-300",
-          isCollapsed ? "ml-16" : "ml-64"
+          isFullscreen ? "ml-0" : (isCollapsed ? "ml-16" : "ml-64")
         )}
       >
         {children}

@@ -17,7 +17,7 @@ export default function Home() {
 
                 <div className="mt-8 text-center text-sm text-muted-foreground">
                     <p>
-                        Powered by Next.js • Shadcn UI • TypeScript
+                        Powered by Next.js • Shadcn UI
                     </p>
                 </div>
             </div>

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Nunito_Sans } from "next/font/google";
 import "./globals.css";
-import { Navigation } from "@/components/navigation";
 import { SidebarLayout } from "@/components/sidebar-layout";
 import { AuthProvider } from "@/components/auth-provider";
 import { SessionProvider } from "@/components/session-provider";

@@ -9,6 +9,7 @@ import { ChatInput } from "./chat-input";
 import { ChatSidebar } from "./chat-sidebar";
 import { Maximize2, Minimize2, PanelLeft, PanelRight } from "lucide-react";
 import { useChatStore } from "@/stores/chat-store";
+import { usePersonaStore } from "@/stores/persona-store";
 
 export function ChatInterface() {
   const {
@@ -23,6 +24,8 @@ export function ChatInterface() {
     createNewSession,
     selectSession,
   } = useChatStore();
+
+  const { currentPersona } = usePersonaStore();
 
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
@@ -130,7 +133,8 @@ export function ChatInterface() {
                     message={message.content}
                     isUser={message.isUser}
                     timestamp={message.timestamp}
-                    avatarFallback={message.isUser ? "You" : "Ai"}
+                    personaName={currentPersona.name}
+                    avatarFallback={message.isUser ? "You" : currentPersona.name}
                   />
                 ))}
                 {isLoading && (
@@ -138,7 +142,9 @@ export function ChatInterface() {
                     message="Thinking..."
                     isUser={false}
                     timestamp={new Date()}
-                    avatarFallback="Nova"
+                    avatarUrl="/images/avatars/nova-avatar.jpeg"
+                    personaName={currentPersona.name}
+                    avatarFallback={currentPersona.name}
                   />
                 )}
                 {!activeSession?.messages.length && (

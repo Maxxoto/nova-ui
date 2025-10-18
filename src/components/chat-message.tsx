@@ -9,14 +9,16 @@ interface ChatMessageProps {
   timestamp: Date;
   avatarUrl?: string;
   avatarFallback?: string;
+  personaName?: string;
 }
 
 export function ChatMessage({
   message,
   isUser,
   timestamp,
-  avatarUrl,
-  avatarFallback = isUser ? "You" : "Ai",
+  avatarUrl = isUser ? undefined : "/images/avatars/nova-avatar.jpeg",
+  personaName,
+  avatarFallback = isUser ? "You" : personaName || "Ai",
 }: ChatMessageProps) {
   return (
     <div

@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface AuthStore {
   isAuthenticated: boolean;
@@ -16,7 +16,7 @@ export const useAuthStore = create<AuthStore>()(
       showLoginDialog: true, // Show by default
       login: () => {
         // TODO: Implement Auth0 login logic
-        console.log('Login with Auth0');
+        console.log("Login with Auth0");
         set({ isAuthenticated: true, showLoginDialog: false });
       },
       logout: () => {
@@ -25,7 +25,7 @@ export const useAuthStore = create<AuthStore>()(
       setShowLoginDialog: (show: boolean) => set({ showLoginDialog: show }),
     }),
     {
-      name: 'auth-storage',
+      name: "auth-storage",
     }
   )
 );

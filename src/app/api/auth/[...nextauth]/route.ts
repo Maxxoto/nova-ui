@@ -18,7 +18,13 @@ const auth0Provider = Auth0Provider({
 export const authOptions = {
   providers: [auth0Provider],
   callbacks: {
-    async session({ session, token }: { session: Session; token: { sub?: string } }) {
+    async session({
+      session,
+      token,
+    }: {
+      session: Session;
+      token: { sub?: string };
+    }) {
       // Send properties to the client, like an access_token from a provider
       if (session.user && token.sub) {
         session.user.id = token.sub as string;

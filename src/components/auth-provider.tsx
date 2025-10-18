@@ -24,11 +24,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   return (
     <>
       {children}
-      {!isAuthenticated && (
-        <LoginDialog
-          isOpen={true}
-        />
-      )}
+      {!isAuthenticated && <LoginDialog isOpen={true} />}
     </>
   );
 }

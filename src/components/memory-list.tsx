@@ -21,7 +21,8 @@ const mockMemories: Memory[] = [
   {
     id: "1",
     title: "Favorite programming languages",
-    content: "User mentioned they prefer TypeScript over JavaScript for large projects",
+    content:
+      "User mentioned they prefer TypeScript over JavaScript for large projects",
     type: "conversation",
     tags: ["programming", "preferences", "work"],
     createdAt: new Date("2024-10-15"),
@@ -29,7 +30,8 @@ const mockMemories: Memory[] = [
   {
     id: "2",
     title: "Travel preferences",
-    content: "User enjoys beach destinations and prefers warm climates for vacations",
+    content:
+      "User enjoys beach destinations and prefers warm climates for vacations",
     type: "text",
     tags: ["travel", "preferences", "personal"],
     createdAt: new Date("2024-10-10"),
@@ -37,7 +39,8 @@ const mockMemories: Memory[] = [
   {
     id: "3",
     title: "Learning goals",
-    content: "User wants to learn machine learning and AI development in the next 6 months",
+    content:
+      "User wants to learn machine learning and AI development in the next 6 months",
     type: "conversation",
     tags: ["learning", "goals", "career"],
     createdAt: new Date("2024-10-05"),
@@ -45,7 +48,8 @@ const mockMemories: Memory[] = [
   {
     id: "4",
     title: "Food preferences",
-    content: "User is vegetarian and enjoys trying new cuisines, especially Asian food",
+    content:
+      "User is vegetarian and enjoys trying new cuisines, especially Asian food",
     type: "text",
     tags: ["food", "preferences", "personal"],
     createdAt: new Date("2024-10-01"),
@@ -53,7 +57,8 @@ const mockMemories: Memory[] = [
   {
     id: "5",
     title: "Project ideas",
-    content: "User mentioned interest in building a personal finance tracking app",
+    content:
+      "User mentioned interest in building a personal finance tracking app",
     type: "conversation",
     tags: ["projects", "ideas", "finance"],
     createdAt: new Date("2024-09-28"),
@@ -68,30 +73,30 @@ export function MemoryList() {
   // Extract all unique tags from memories
   const allTags = useMemo(() => {
     const tags = new Set<string>();
-    mockMemories.forEach(memory => {
-      memory.tags.forEach(tag => tags.add(tag));
+    mockMemories.forEach((memory) => {
+      memory.tags.forEach((tag) => tags.add(tag));
     });
     return Array.from(tags).sort();
   }, []);
 
   // Filter memories based on search query and selected tags
   const filteredMemories = useMemo(() => {
-    return mockMemories.filter(memory => {
-      const matchesSearch = memory.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           memory.content.toLowerCase().includes(searchQuery.toLowerCase());
-      
-      const matchesTags = selectedTags.length === 0 || 
-                         selectedTags.some(tag => memory.tags.includes(tag));
-      
+    return mockMemories.filter((memory) => {
+      const matchesSearch =
+        memory.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        memory.content.toLowerCase().includes(searchQuery.toLowerCase());
+
+      const matchesTags =
+        selectedTags.length === 0 ||
+        selectedTags.some((tag) => memory.tags.includes(tag));
+
       return matchesSearch && matchesTags;
     });
   }, [searchQuery, selectedTags]);
 
   const handleTagToggle = (tag: string) => {
-    setSelectedTags(prev =>
-      prev.includes(tag)
-        ? prev.filter(t => t !== tag)
-        : [...prev, tag]
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
     );
   };
 
@@ -156,9 +161,9 @@ export function MemoryList() {
                 </Button>
               )}
             </div>
-            
+
             <div className="flex flex-wrap gap-2">
-              {allTags.map(tag => (
+              {allTags.map((tag) => (
                 <Badge
                   key={tag}
                   variant={selectedTags.includes(tag) ? "default" : "outline"}
@@ -176,7 +181,8 @@ export function MemoryList() {
       {/* Results Count */}
       <div className="flex items-center justify-between">
         <p className="text-sm text-muted-foreground">
-          {filteredMemories.length} {filteredMemories.length === 1 ? 'memory' : 'memories'} found
+          {filteredMemories.length}{" "}
+          {filteredMemories.length === 1 ? "memory" : "memories"} found
         </p>
         {(searchQuery || selectedTags.length > 0) && (
           <Button
@@ -193,7 +199,7 @@ export function MemoryList() {
 
       {/* Memory List */}
       <div className="space-y-4">
-        {filteredMemories.map(memory => (
+        {filteredMemories.map((memory) => (
           <MemoryItem
             key={memory.id}
             {...memory}
@@ -202,17 +208,14 @@ export function MemoryList() {
             onEditTags={handleEditTags}
           />
         ))}
-        
+
         {filteredMemories.length === 0 && (
           <div className="text-center py-12">
-            <div className="text-muted-foreground mb-2">
-              No memories found
-            </div>
+            <div className="text-muted-foreground mb-2">No memories found</div>
             <p className="text-sm text-muted-foreground">
-              {searchQuery || selectedTags.length > 0 
+              {searchQuery || selectedTags.length > 0
                 ? "Try adjusting your search or filters"
-                : "Start chatting with Nova to build your memory log"
-              }
+                : "Start chatting with Nova to build your memory log"}
             </p>
           </div>
         )}

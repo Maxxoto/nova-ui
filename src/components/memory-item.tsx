@@ -9,7 +9,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, FileText, Image, Trash2, Tag, Eye } from "lucide-react";
+import {
+  MoreHorizontal,
+  FileText,
+  Image,
+  Trash2,
+  Tag,
+  Eye,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface MemoryItemProps {
@@ -58,26 +65,18 @@ export function MemoryItem({
     <Card className="p-4 hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between">
         <div className="flex items-start gap-3 flex-1">
-          <div className="mt-1">
-            {getTypeIcon()}
-          </div>
-          
+          <div className="mt-1">{getTypeIcon()}</div>
+
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-lg mb-1 line-clamp-1">
-              {title}
-            </h3>
-            
+            <h3 className="font-semibold text-lg mb-1 line-clamp-1">{title}</h3>
+
             <p className="text-muted-foreground text-sm mb-2 line-clamp-2">
               {content}
             </p>
-            
+
             <div className="flex flex-wrap gap-1 mb-2">
               {tags.slice(0, 3).map((tag) => (
-                <Badge
-                  key={tag}
-                  variant="secondary"
-                  className="text-xs"
-                >
+                <Badge key={tag} variant="secondary" className="text-xs">
                   {tag}
                 </Badge>
               ))}
@@ -87,13 +86,13 @@ export function MemoryItem({
                 </Badge>
               )}
             </div>
-            
+
             <div className="flex items-center gap-4 text-xs text-muted-foreground">
               <span>Saved {formatDate(createdAt)}</span>
             </div>
           </div>
         </div>
-        
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="sm">
@@ -109,7 +108,7 @@ export function MemoryItem({
               <Tag className="h-4 w-4 mr-2" />
               Edit Tags
             </DropdownMenuItem>
-            <DropdownMenuItem 
+            <DropdownMenuItem
               onClick={() => onDelete(id)}
               className="text-destructive focus:text-destructive"
             >

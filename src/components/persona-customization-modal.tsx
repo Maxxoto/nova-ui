@@ -69,54 +69,58 @@ export function PersonaCustomizationModal({
   const addTrait = () => {
     if (selectedTrait.trim()) {
       const presetTraits = {
-        "Calm": "Maintains composure and provides thoughtful responses",
-        "Curious": "Asks clarifying questions and explores topics deeply",
-        "Empathetic": "Shows understanding and emotional intelligence",
-        "Analytical": "Breaks down complex problems systematically",
-        "Creative": "Generates innovative ideas and solutions",
-        "Patient": "Takes time to explain concepts thoroughly",
-        "Encouraging": "Provides positive reinforcement and motivation",
-        "Direct": "Gets straight to the point without unnecessary details",
-        "Humorous": "Uses appropriate humor to lighten conversations",
-        "Professional": "Maintains formal and business-appropriate tone",
-        "Friendly": "Uses warm and approachable communication style",
-        "Technical": "Focuses on technical accuracy and precision",
-        "Supportive": "Offers help and guidance when needed",
-        "Adaptive": "Adjusts communication style based on context"
+        Calm: "Maintains composure and provides thoughtful responses",
+        Curious: "Asks clarifying questions and explores topics deeply",
+        Empathetic: "Shows understanding and emotional intelligence",
+        Analytical: "Breaks down complex problems systematically",
+        Creative: "Generates innovative ideas and solutions",
+        Patient: "Takes time to explain concepts thoroughly",
+        Encouraging: "Provides positive reinforcement and motivation",
+        Direct: "Gets straight to the point without unnecessary details",
+        Humorous: "Uses appropriate humor to lighten conversations",
+        Professional: "Maintains formal and business-appropriate tone",
+        Friendly: "Uses warm and approachable communication style",
+        Technical: "Focuses on technical accuracy and precision",
+        Supportive: "Offers help and guidance when needed",
+        Adaptive: "Adjusts communication style based on context",
       };
 
       const traitName = selectedTrait;
-      const traitDescription = presetTraits[traitName as keyof typeof presetTraits] || "Custom trait";
-      
-      setEditedPersona(prev => ({
+      const traitDescription =
+        presetTraits[traitName as keyof typeof presetTraits] || "Custom trait";
+
+      setEditedPersona((prev) => ({
         ...prev,
-        coreTraits: [...prev.coreTraits, { name: traitName, description: traitDescription }]
+        coreTraits: [
+          ...prev.coreTraits,
+          { name: traitName, description: traitDescription },
+        ],
       }));
       setSelectedTrait("");
     }
   };
 
   const removeTrait = (index: number) => {
-    setEditedPersona(prev => ({
+    setEditedPersona((prev) => ({
       ...prev,
-      coreTraits: prev.coreTraits.filter((_, i) => i !== index)
+      coreTraits: prev.coreTraits.filter((_, i) => i !== index),
     }));
   };
 
   const addResponseStyle = () => {
     if (selectedResponseStyle.trim()) {
-      setEditedPersona(prev => ({
+      setEditedPersona((prev) => ({
         ...prev,
-        responseStyle: [...prev.responseStyle, selectedResponseStyle.trim()]
+        responseStyle: [...prev.responseStyle, selectedResponseStyle.trim()],
       }));
       setSelectedResponseStyle("");
     }
   };
 
   const removeResponseStyle = (index: number) => {
-    setEditedPersona(prev => ({
+    setEditedPersona((prev) => ({
       ...prev,
-      responseStyle: prev.responseStyle.filter((_, i) => i !== index)
+      responseStyle: prev.responseStyle.filter((_, i) => i !== index),
     }));
   };
 
@@ -126,7 +130,8 @@ export function PersonaCustomizationModal({
         <DialogHeader>
           <DialogTitle>Customize Persona</DialogTitle>
           <DialogDescription>
-            Modify your AI assistant&apos;s personality, language preferences, and communication style.
+            Modify your AI assistants personality, language preferences, and
+            communication style.
           </DialogDescription>
         </DialogHeader>
 
@@ -140,7 +145,12 @@ export function PersonaCustomizationModal({
                 <Input
                   id="name"
                   value={editedPersona.name}
-                  onChange={(e) => setEditedPersona(prev => ({ ...prev, name: e.target.value }))}
+                  onChange={(e) =>
+                    setEditedPersona((prev) => ({
+                      ...prev,
+                      name: e.target.value,
+                    }))
+                  }
                   placeholder="Enter persona name"
                 />
               </div>
@@ -149,8 +159,13 @@ export function PersonaCustomizationModal({
                 <Textarea
                   id="description"
                   value={editedPersona.description}
-                  onChange={(e) => setEditedPersona(prev => ({ ...prev, description: e.target.value }))}
-                  placeholder="Describe your AI assistant&apos;s role and purpose"
+                  onChange={(e) =>
+                    setEditedPersona((prev) => ({
+                      ...prev,
+                      description: e.target.value,
+                    }))
+                  }
+                  placeholder="Describe your AI assistant's role and purpose"
                   rows={3}
                 />
               </div>
@@ -165,7 +180,12 @@ export function PersonaCustomizationModal({
                 <Label htmlFor="primaryLanguage">Primary Language</Label>
                 <Select
                   value={editedPersona.primaryLanguage}
-                  onValueChange={(value) => setEditedPersona(prev => ({ ...prev, primaryLanguage: value }))}
+                  onValueChange={(value) =>
+                    setEditedPersona((prev) => ({
+                      ...prev,
+                      primaryLanguage: value,
+                    }))
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select primary language" />
@@ -190,7 +210,12 @@ export function PersonaCustomizationModal({
                 <Label htmlFor="secondaryLanguage">Secondary Language</Label>
                 <Select
                   value={editedPersona.secondaryLanguage}
-                  onValueChange={(value) => setEditedPersona(prev => ({ ...prev, secondaryLanguage: value }))}
+                  onValueChange={(value) =>
+                    setEditedPersona((prev) => ({
+                      ...prev,
+                      secondaryLanguage: value,
+                    }))
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select secondary language" />
@@ -219,11 +244,18 @@ export function PersonaCustomizationModal({
           <div className="space-y-4">
             <h3 className="font-semibold">Communication Style</h3>
             <div className="space-y-2">
-              <Label htmlFor="communicationStyle">Communication Style Description</Label>
+              <Label htmlFor="communicationStyle">
+                Communication Style Description
+              </Label>
               <Textarea
                 id="communicationStyle"
                 value={editedPersona.communicationStyle}
-                onChange={(e) => setEditedPersona(prev => ({ ...prev, communicationStyle: e.target.value }))}
+                onChange={(e) =>
+                  setEditedPersona((prev) => ({
+                    ...prev,
+                    communicationStyle: e.target.value,
+                  }))
+                }
                 placeholder="Describe how your AI assistant should communicate"
                 rows={3}
               />
@@ -236,7 +268,11 @@ export function PersonaCustomizationModal({
             <div className="space-y-3">
               <div className="flex flex-wrap gap-2 mb-3">
                 {editedPersona.coreTraits.map((trait, index) => (
-                  <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                  <Badge
+                    key={index}
+                    variant="secondary"
+                    className="flex items-center gap-1"
+                  >
                     {trait.name}
                     <button
                       onClick={() => removeTrait(index)}
@@ -247,7 +283,7 @@ export function PersonaCustomizationModal({
                   </Badge>
                 ))}
               </div>
-              
+
               {/* Add New Trait */}
               <div className="p-3 border border-dashed rounded-lg">
                 <div className="space-y-2">
@@ -296,7 +332,11 @@ export function PersonaCustomizationModal({
             <div className="space-y-2">
               <div className="flex flex-wrap gap-2 mb-3">
                 {editedPersona.responseStyle.map((style, index) => (
-                  <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                  <Badge
+                    key={index}
+                    variant="secondary"
+                    className="flex items-center gap-1"
+                  >
                     {style}
                     <button
                       onClick={() => removeResponseStyle(index)}
@@ -347,9 +387,7 @@ export function PersonaCustomizationModal({
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Cancel
           </Button>
-          <Button onClick={handleSave}>
-            Save Changes
-          </Button>
+          <Button onClick={handleSave}>Save Changes</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

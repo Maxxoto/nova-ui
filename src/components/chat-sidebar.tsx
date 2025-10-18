@@ -32,15 +32,16 @@ export function ChatSidebar({
 }: ChatSidebarProps) {
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredSessions = sessions.filter(session =>
-    session.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    session.lastMessage.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredSessions = sessions.filter(
+    (session) =>
+      session.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      session.lastMessage.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const formatTime = (date: Date) => {
     const now = new Date();
     const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60);
-    
+
     if (diffInHours < 1) {
       return "Just now";
     } else if (diffInHours < 24) {
@@ -65,7 +66,7 @@ export function ChatSidebar({
             <Plus className="h-4 w-4" />
           </Button>
         </div>
-        
+
         {/* Search */}
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -91,7 +92,9 @@ export function ChatSidebar({
               {filteredSessions.map((session) => (
                 <Button
                   key={session.id}
-                  variant={activeSessionId === session.id ? "secondary" : "ghost"}
+                  variant={
+                    activeSessionId === session.id ? "secondary" : "ghost"
+                  }
                   className={`w-full justify-start h-auto p-3 ${
                     activeSessionId === session.id ? "bg-muted" : ""
                   }`}

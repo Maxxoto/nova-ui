@@ -19,7 +19,7 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
       <main
         className={cn(
           "flex-1 transition-all duration-300",
-          isFullscreen ? "ml-0" : (isCollapsed ? "ml-16" : "ml-64")
+          isFullscreen ? "ml-0" : isCollapsed ? "ml-16" : "ml-64"
         )}
       >
         {children}

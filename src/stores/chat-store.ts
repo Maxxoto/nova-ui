@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 // Function to handle SSE streaming that can be used with useMutation
 export const sendChatMessage = async (
@@ -6,15 +6,15 @@ export const sendChatMessage = async (
   onStreamUpdate: (content: string) => void
 ): Promise<void> => {
   try {
-    const response = await fetch('/api/chat', {
-      method: 'POST',
+    const response = await fetch("/api/chat", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         messages: [
           {
-            role: 'user',
+            role: "user",
             content: content,
           },
         ],
@@ -27,11 +27,11 @@ export const sendChatMessage = async (
 
     const reader = response.body?.getReader();
     if (!reader) {
-      throw new Error('No response body received');
+      throw new Error("No response body received");
     }
 
     const decoder = new TextDecoder();
-    let buffer = '';
+    let buffer = "";
 
     while (true) {
       const { done, value } = await reader.read();
@@ -41,19 +41,19 @@ export const sendChatMessage = async (
       buffer += chunk;
 
       // Process complete lines
-      const lines = buffer.split('\n');
-      buffer = lines.pop() || ''; // Keep incomplete line in buffer
+      const lines = buffer.split("\n");
+      buffer = lines.pop() || ""; // Keep incomplete line in buffer
 
       for (const line of lines) {
         if (line.trim()) {
           try {
             const parsedData = JSON.parse(line);
-            if (parsedData.content && parsedData.type === 'chunk') {
+            if (parsedData.content && parsedData.type === "chunk") {
               onStreamUpdate(parsedData.content);
             }
           } catch (e) {
             // Skip non-JSON lines or parsing errors
-            console.warn('Failed to parse line:', line);
+            console.warn("Failed to parse line:", line);
           }
         }
       }
@@ -63,15 +63,15 @@ export const sendChatMessage = async (
     if (buffer.trim()) {
       try {
         const parsedData = JSON.parse(buffer);
-        if (parsedData.content && parsedData.type === 'chunk') {
+        if (parsedData.content && parsedData.type === "chunk") {
           onStreamUpdate(parsedData.content);
         }
       } catch (e) {
-        console.warn('Failed to parse remaining buffer:', buffer);
+        console.warn("Failed to parse remaining buffer:", buffer);
       }
     }
   } catch (error) {
-    console.error('Error sending message:', error);
+    console.error("Error sending message:", error);
     throw error;
   }
 };
@@ -99,7 +99,7 @@ interface ChatStore {
   isFullscreen: boolean;
   isSidebarOpen: boolean;
   isLoading: boolean;
-  connectionStatus: 'connected' | 'disconnected' | 'error' | 'connecting';
+  connectionStatus: "connected" | "disconnected" | "error" | "connecting";
 
   // Actions
   setSessions: (sessions: ChatSession[]) => void;
@@ -108,7 +108,7 @@ interface ChatStore {
   setIsSidebarOpen: (isSidebarOpen: boolean) => void;
   setIsLoading: (isLoading: boolean) => void;
   setConnectionStatus: (
-    status: 'connected' | 'disconnected' | 'error' | 'connecting'
+    status: "connected" | "disconnected" | "error" | "connecting"
   ) => void;
 
   // Complex actions
@@ -121,14 +121,14 @@ interface ChatStore {
 
 const initialSessions: ChatSession[] = [
   {
-    id: '1',
-    title: 'Welcome Chat',
+    id: "1",
+    title: "Welcome Chat",
     lastMessage: "Hello! I'm Nova, your AI assistant.",
     timestamp: new Date(),
     messageCount: 1,
     messages: [
       {
-        id: '1',
+        id: "1",
         content:
           "Hello! I'm Nova, your AI assistant. How can I help you today?",
         isUser: false,
@@ -141,11 +141,11 @@ const initialSessions: ChatSession[] = [
 export const useChatStore = create<ChatStore>((set, get) => ({
   // Initial state
   sessions: initialSessions,
-  activeSessionId: '1',
+  activeSessionId: "1",
   isFullscreen: false,
   isSidebarOpen: true,
   isLoading: false,
-  connectionStatus: 'disconnected',
+  connectionStatus: "disconnected",
 
   // Basic setters
   setSessions: (sessions) => set({ sessions }),
@@ -178,8 +178,8 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     const newSessionId = Date.now().toString();
     const newSession: ChatSession = {
       id: newSessionId,
-      title: 'New Chat',
-      lastMessage: 'Start a new conversation',
+      title: "New Chat",
+      lastMessage: "Start a new conversation",
       timestamp: new Date(),
       messageCount: 0,
       messages: [],
@@ -218,7 +218,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       const aiMessageId = (Date.now() + 1).toString();
       const aiMessage: Message = {
         id: aiMessageId,
-        content: '',
+        content: "",
         isUser: false,
         timestamp: new Date(),
       };
@@ -226,7 +226,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       // Add empty AI message to start streaming
       addMessage(activeSessionId, aiMessage);
 
-      let accumulatedContent = '';
+      let accumulatedContent = "";
 
       // Use the sendChatMessage function with streaming callback
       await sendChatMessage(content, (chunk) => {
@@ -257,7 +257,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
         set({ sessions: updatedSessions });
       });
     } catch (error) {
-      console.error('Error sending message:', error);
+      console.error("Error sending message:", error);
 
       // Update the AI message with error
       const { sessions } = get();
@@ -268,7 +268,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
               return {
                 ...message,
                 content:
-                  'Sorry, I encountered an error while processing your message. Please try again.',
+                  "Sorry, I encountered an error while processing your message. Please try again.",
               };
             }
             return message;
@@ -276,7 +276,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
           return {
             ...session,
             messages: updatedMessages,
-            lastMessage: 'Error occurred',
+            lastMessage: "Error occurred",
             timestamp: new Date(),
           };
         }
@@ -291,34 +291,34 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   testConnection: async () => {
     try {
       const { setConnectionStatus } = get();
-      setConnectionStatus('connecting');
+      setConnectionStatus("connecting");
 
-      const response = await fetch('/api/chat', {
-        method: 'POST',
+      const response = await fetch("/api/chat", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           messages: [
             {
-              role: 'user',
-              content: 'test',
+              role: "user",
+              content: "test",
             },
           ],
         }),
       });
 
       if (response.ok) {
-        setConnectionStatus('connected');
+        setConnectionStatus("connected");
         return true;
       } else {
-        setConnectionStatus('error');
+        setConnectionStatus("error");
         return false;
       }
     } catch (error) {
-      console.error('Connection test failed:', error);
+      console.error("Connection test failed:", error);
       const { setConnectionStatus } = get();
-      setConnectionStatus('error');
+      setConnectionStatus("error");
       return false;
     }
   },

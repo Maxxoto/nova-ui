@@ -31,10 +31,15 @@ export function PersonaSettings() {
             </div>
             <div>
               <h2 className="text-2xl font-bold">{currentPersona.name}</h2>
-              <p className="text-muted-foreground">{currentPersona.description}</p>
+              <p className="text-muted-foreground">
+                {currentPersona.description}
+              </p>
             </div>
           </div>
-          <Badge variant="secondary" className="text-sm bg-green-500 text-white">
+          <Badge
+            variant="secondary"
+            className="text-sm bg-green-500 text-white"
+          >
             Active
           </Badge>
         </div>
@@ -49,11 +54,15 @@ export function PersonaSettings() {
             <div className="space-y-2">
               <div className="flex justify-between">
                 <span className="text-sm">Primary Language</span>
-                <Badge variant="outline">{currentPersona.primaryLanguage}</Badge>
+                <Badge variant="outline">
+                  {currentPersona.primaryLanguage}
+                </Badge>
               </div>
               <div className="flex justify-between">
                 <span className="text-sm">Secondary Language</span>
-                <Badge variant="outline">{currentPersona.secondaryLanguage}</Badge>
+                <Badge variant="outline">
+                  {currentPersona.secondaryLanguage}
+                </Badge>
               </div>
             </div>
           </div>
@@ -79,7 +88,9 @@ export function PersonaSettings() {
             {currentPersona.coreTraits.map((trait, index) => (
               <Card key={index} className="p-4 bg-muted/20">
                 <h4 className="font-medium mb-2">{trait.name}</h4>
-                <p className="text-sm text-muted-foreground">{trait.description}</p>
+                <p className="text-sm text-muted-foreground">
+                  {trait.description}
+                </p>
               </Card>
             ))}
           </div>
@@ -104,11 +115,13 @@ export function PersonaSettings() {
       {/* Actions */}
       <div className="flex flex-col gap-3">
         {saveMessage && (
-          <div className={`text-sm p-3 rounded-md ${
-            saveMessage.includes("successfully")
-              ? "bg-green-50 text-green-700 border border-green-200"
-              : "bg-red-50 text-red-700 border border-red-200"
-          }`}>
+          <div
+            className={`text-sm p-3 rounded-md ${
+              saveMessage.includes("successfully")
+                ? "bg-green-50 text-green-700 border border-green-200"
+                : "bg-red-50 text-red-700 border border-red-200"
+            }`}
+          >
             {saveMessage}
           </div>
         )}
@@ -120,10 +133,7 @@ export function PersonaSettings() {
             <Settings className="h-4 w-4 mr-2" />
             Customize
           </Button>
-          <Button
-            onClick={handleSaveChanges}
-            disabled={isSaving}
-          >
+          <Button onClick={handleSaveChanges} disabled={isSaving}>
             {isSaving ? (
               <>
                 <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />

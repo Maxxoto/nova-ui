@@ -7,36 +7,32 @@ import { SessionProvider } from "@/components/session-provider";
 import { ReactQueryProvider } from "@/components/react-query-provider";
 
 const nunitoSans = Nunito_Sans({
-    variable: "--font-nunito-sans",
-    subsets: ["latin"],
-    weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-nunito-sans",
+  subsets: ["latin"],
+  weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
-    title: "Nova AI Assistant",
-    description: "Your personalized AI companion",
+  title: "Nova AI Assistant",
+  description: "Your personalized AI companion",
 };
 
 export default function RootLayout({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    return (
-        <html lang="en">
-            <body
-                className={`${nunitoSans.variable} antialiased`}
-            >
-                <ReactQueryProvider>
-                    <SessionProvider>
-                        <AuthProvider>
-                            <SidebarLayout>
-                                {children}
-                            </SidebarLayout>
-                        </AuthProvider>
-                    </SessionProvider>
-                </ReactQueryProvider>
-            </body>
-        </html>
-    );
+  return (
+    <html lang="en">
+      <body className={`${nunitoSans.variable} antialiased`}>
+        <ReactQueryProvider>
+          <SessionProvider>
+            <AuthProvider>
+              <SidebarLayout>{children}</SidebarLayout>
+            </AuthProvider>
+          </SessionProvider>
+        </ReactQueryProvider>
+      </body>
+    </html>
+  );
 }

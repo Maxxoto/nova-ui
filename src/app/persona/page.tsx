@@ -1,24 +1,23 @@
-import { ChatInterface } from "@/components/chat-interface";
+import { PersonaSettings } from "@/components/persona-settings";
 
-export default function Home() {
+export default function PersonaPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted/30">
       <div className="container mx-auto px-4 py-8">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold tracking-tight mb-2">
-            Nova AI Assistant
+            Persona Settings
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Your personalized AI companion with elegant, modern interface. 
-            Built with Next.js and Shadcn UI.
+            Customize your AI assistant's personality and behavior
           </p>
         </div>
         
-        <ChatInterface />
+        <PersonaSettings />
         
         <div className="mt-8 text-center text-sm text-muted-foreground">
           <p>
-            Powered by Next.js • Shadcn UI • TypeScript
+            Your AI companion adapts to your preferences and communication style
           </p>
         </div>
       </div>

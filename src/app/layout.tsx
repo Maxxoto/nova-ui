@@ -3,8 +3,8 @@ import { Nunito_Sans } from "next/font/google";
 import "./globals.css";
 import { Navigation } from "@/components/navigation";
 import { SidebarLayout } from "@/components/sidebar-layout";
-import { LoginDialog } from "@/components/login-dialog";
 import { AuthProvider } from "@/components/auth-provider";
+import { SessionProvider } from "@/components/session-provider";
 
 const nunitoSans = Nunito_Sans({
     variable: "--font-nunito-sans",
@@ -27,11 +27,13 @@ export default function RootLayout({
             <body
                 className={`${nunitoSans.variable} antialiased`}
             >
-                <AuthProvider>
-                    <SidebarLayout>
-                        {children}
-                    </SidebarLayout>
-                </AuthProvider>
+                <SessionProvider>
+                    <AuthProvider>
+                        <SidebarLayout>
+                            {children}
+                        </SidebarLayout>
+                    </AuthProvider>
+                </SessionProvider>
             </body>
         </html>
     );

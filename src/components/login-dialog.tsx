@@ -1,16 +1,20 @@
 "use client";
 
+import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Shield } from "lucide-react";
 
 interface LoginDialogProps {
     isOpen: boolean;
-    onLogin: () => void;
 }
 
-export function LoginDialog({ isOpen, onLogin }: LoginDialogProps) {
+export function LoginDialog({ isOpen }: LoginDialogProps) {
     if (!isOpen) return null;
+
+    const handleLogin = () => {
+        signIn("auth0");
+    };
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
@@ -26,13 +30,13 @@ export function LoginDialog({ isOpen, onLogin }: LoginDialogProps) {
                     <div className="space-y-2">
                         <CardTitle className="text-2xl">Welcome to Nova</CardTitle>
                         <CardDescription>
-                            Your personalized AI
+                            Your personalized AI companion with memory and conversation capabilities
                         </CardDescription>
                     </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <Button
-                        onClick={onLogin}
+                        onClick={handleLogin}
                         className="w-full"
                         size="lg"
                     >

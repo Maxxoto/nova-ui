@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuthStore } from "@/stores/auth-store";
+import { useSession } from "next-auth/react";
 import { LoginDialog } from "./login-dialog";
 
 interface AuthProviderProps {
@@ -8,21 +8,25 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const { isAuthenticated, showLoginDialog, login, setShowLoginDialog } = useAuthStore();
+  const { data: session, status } = useSession();
 
-  const handleLogin = () => {
-    login();
-    // In a real implementation, this would redirect to Auth0
-    // For now, we'll just simulate successful login
-  };
+  const isAuthenticated = !!session;
+  const isLoading = status === "loading";
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <>
       {children}
       {!isAuthenticated && (
         <LoginDialog
-          isOpen={showLoginDialog}
-          onLogin={handleLogin}
+          isOpen={true}
         />
       )}
     </>

@@ -125,7 +125,7 @@ export default function KnowledgePage() {
                                     <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                                     <h3 className="text-lg font-semibold mb-2">No knowledge sources yet</h3>
                                     <p className="text-muted-foreground mb-4">
-                                        Add your first knowledge source to start building your AI's knowledge base.
+                                        Add your first knowledge source to start building your AI&apos;s knowledge base.
                                     </p>
                                     <Button onClick={() => setIsAddingWebsite(true)}>
                                         <Plus className="h-4 w-4 mr-2" />

@@ -1,17 +1,20 @@
 import { create } from 'zustand';
 
 // Function to handle SSE streaming that can be used with useMutation
-export const sendChatMessage = async (content: string, onStreamUpdate: (content: string) => void): Promise<void> => {
+export const sendChatMessage = async (
+  content: string,
+  onStreamUpdate: (content: string) => void
+): Promise<void> => {
   try {
-    const response = await fetch("/api/chat", {
-      method: "POST",
+    const response = await fetch('/api/chat', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         messages: [
           {
-            role: "user",
+            role: 'user',
             content: content,
           },
         ],
@@ -24,7 +27,7 @@ export const sendChatMessage = async (content: string, onStreamUpdate: (content:
 
     const reader = response.body?.getReader();
     if (!reader) {
-      throw new Error("No response body received");
+      throw new Error('No response body received');
     }
 
     const decoder = new TextDecoder();
@@ -68,7 +71,7 @@ export const sendChatMessage = async (content: string, onStreamUpdate: (content:
       }
     }
   } catch (error) {
-    console.error("Error sending message:", error);
+    console.error('Error sending message:', error);
     throw error;
   }
 };
@@ -104,8 +107,10 @@ interface ChatStore {
   setIsFullscreen: (isFullscreen: boolean) => void;
   setIsSidebarOpen: (isSidebarOpen: boolean) => void;
   setIsLoading: (isLoading: boolean) => void;
-  setConnectionStatus: (status: 'connected' | 'disconnected' | 'error' | 'connecting') => void;
-  
+  setConnectionStatus: (
+    status: 'connected' | 'disconnected' | 'error' | 'connecting'
+  ) => void;
+
   // Complex actions
   addMessage: (sessionId: string, message: Message) => void;
   createNewSession: () => string;
@@ -116,15 +121,16 @@ interface ChatStore {
 
 const initialSessions: ChatSession[] = [
   {
-    id: "1",
-    title: "Welcome Chat",
+    id: '1',
+    title: 'Welcome Chat',
     lastMessage: "Hello! I'm Nova, your AI assistant.",
     timestamp: new Date(),
     messageCount: 1,
     messages: [
       {
-        id: "1",
-        content: "Hello! I'm Nova, your AI assistant. How can I help you today?",
+        id: '1',
+        content:
+          "Hello! I'm Nova, your AI assistant. How can I help you today?",
         isUser: false,
         timestamp: new Date(),
       },
@@ -135,7 +141,7 @@ const initialSessions: ChatSession[] = [
 export const useChatStore = create<ChatStore>((set, get) => ({
   // Initial state
   sessions: initialSessions,
-  activeSessionId: "1",
+  activeSessionId: '1',
   isFullscreen: false,
   isSidebarOpen: true,
   isLoading: false,
@@ -152,7 +158,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   // Complex actions
   addMessage: (sessionId, message) => {
     const { sessions } = get();
-    const updatedSessions = sessions.map(session => {
+    const updatedSessions = sessions.map((session) => {
       if (session.id === sessionId) {
         const updatedMessages = [...session.messages, message];
         return {
@@ -172,14 +178,14 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     const newSessionId = Date.now().toString();
     const newSession: ChatSession = {
       id: newSessionId,
-      title: "New Chat",
-      lastMessage: "Start a new conversation",
+      title: 'New Chat',
+      lastMessage: 'Start a new conversation',
       timestamp: new Date(),
       messageCount: 0,
       messages: [],
     };
-    
-    set(state => ({
+
+    set((state) => ({
       sessions: [newSession, ...state.sessions],
       activeSessionId: newSessionId,
     }));
@@ -193,7 +199,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
   sendMessage: async (content: string) => {
     const { activeSessionId, addMessage, setIsLoading } = get();
-    
+
     if (!activeSessionId) return;
 
     // Add user message
@@ -212,7 +218,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       const aiMessageId = (Date.now() + 1).toString();
       const aiMessage: Message = {
         id: aiMessageId,
-        content: "",
+        content: '',
         isUser: false,
         timestamp: new Date(),
       };
@@ -220,7 +226,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       // Add empty AI message to start streaming
       addMessage(activeSessionId, aiMessage);
 
-      let accumulatedContent = "";
+      let accumulatedContent = '';
 
       // Use the sendChatMessage function with streaming callback
       await sendChatMessage(content, (chunk) => {
@@ -228,9 +234,9 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
         // Update the AI message with the accumulated content
         const { sessions } = get();
-        const updatedSessions = sessions.map(session => {
+        const updatedSessions = sessions.map((session) => {
           if (session.id === activeSessionId) {
-            const updatedMessages = session.messages.map(message => {
+            const updatedMessages = session.messages.map((message) => {
               if (message.id === aiMessageId) {
                 return {
                   ...message,
@@ -250,19 +256,19 @@ export const useChatStore = create<ChatStore>((set, get) => ({
         });
         set({ sessions: updatedSessions });
       });
-
     } catch (error) {
-      console.error("Error sending message:", error);
-      
+      console.error('Error sending message:', error);
+
       // Update the AI message with error
       const { sessions } = get();
-      const updatedSessions = sessions.map(session => {
+      const updatedSessions = sessions.map((session) => {
         if (session.id === activeSessionId) {
-          const updatedMessages = session.messages.map(message => {
+          const updatedMessages = session.messages.map((message) => {
             if (message.id === (Date.now() + 1).toString()) {
               return {
                 ...message,
-                content: "Sorry, I encountered an error while processing your message. Please try again.",
+                content:
+                  'Sorry, I encountered an error while processing your message. Please try again.',
               };
             }
             return message;
@@ -270,7 +276,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
           return {
             ...session,
             messages: updatedMessages,
-            lastMessage: "Error occurred",
+            lastMessage: 'Error occurred',
             timestamp: new Date(),
           };
         }
@@ -286,17 +292,17 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     try {
       const { setConnectionStatus } = get();
       setConnectionStatus('connecting');
-      
-      const response = await fetch("/api/chat", {
-        method: "POST",
+
+      const response = await fetch('/api/chat', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           messages: [
             {
-              role: "user",
-              content: "test",
+              role: 'user',
+              content: 'test',
             },
           ],
         }),
@@ -310,7 +316,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
         return false;
       }
     } catch (error) {
-      console.error("Connection test failed:", error);
+      console.error('Connection test failed:', error);
       const { setConnectionStatus } = get();
       setConnectionStatus('error');
       return false;

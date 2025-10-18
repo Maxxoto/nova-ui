@@ -126,7 +126,7 @@ export function PersonaCustomizationModal({
         <DialogHeader>
           <DialogTitle>Customize Persona</DialogTitle>
           <DialogDescription>
-            Modify your AI assistant's personality, language preferences, and communication style.
+            Modify your AI assistant&apos;s personality, language preferences, and communication style.
           </DialogDescription>
         </DialogHeader>
 
@@ -150,7 +150,7 @@ export function PersonaCustomizationModal({
                   id="description"
                   value={editedPersona.description}
                   onChange={(e) => setEditedPersona(prev => ({ ...prev, description: e.target.value }))}
-                  placeholder="Describe your AI assistant's role and purpose"
+                  placeholder="Describe your AI assistant&apos;s role and purpose"
                   rows={3}
                 />
               </div>

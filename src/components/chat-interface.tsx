@@ -101,7 +101,7 @@ export function ChatInterface() {
         onError: (error) => {
             console.error("Error sending message:", error);
             setIsLoading(false);
-            
+
             // Update the AI message with error
             if (activeSessionId) {
                 const { sessions } = useChatStore.getState();
@@ -207,8 +207,8 @@ export function ChatInterface() {
                         <div className={`
                             h-3 w-3 rounded-full
                             ${connectionStatus === 'connected' ? 'bg-green-500' :
-                              connectionStatus === 'connecting' ? 'bg-yellow-500 animate-pulse' :
-                              'bg-red-500'}
+                                connectionStatus === 'connecting' ? 'bg-yellow-500 animate-pulse' :
+                                    'bg-red-500'}
                         `} />
                         <div>
                             <h1 className="font-semibold">Nova AI Assistant</h1>
@@ -254,7 +254,7 @@ export function ChatInterface() {
                                 ))}
                                 {isLoading && (
                                     <ChatMessage
-                                        message="Thinking..."
+                                        message="..."
                                         isUser={false}
                                         timestamp={new Date()}
                                         avatarUrl="/images/avatars/nova-avatar.jpeg"

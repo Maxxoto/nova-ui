@@ -124,4 +124,41 @@
     background-repeat: no-repeat;
     background-attachment: fixed;
   }
+/* Markdown table styling for AI responses */
+.prose table {
+  @apply w-full border-collapse border border-gray-300 my-4;
+}
+
+.prose thead {
+  @apply bg-gray-100;
+}
+
+.prose th {
+  @apply border border-gray-300 px-4 py-2 text-left font-semibold bg-gray-50;
+}
+
+.prose td {
+  @apply border border-gray-300 px-4 py-2;
+}
+
+.prose tr:nth-child(even) {
+  @apply bg-gray-50;
+}
+
+.prose tr:hover {
+  @apply bg-gray-100;
+}
+
+/* Ensure table styling works with react-markdown */
+.prose :where(table):not(:where([class~="not-prose"] *)) {
+  @apply w-full border-collapse border border-gray-300 my-4;
+}
+
+.prose :where(th):not(:where([class~="not-prose"] *)) {
+  @apply border border-gray-300 px-4 py-2 text-left font-semibold bg-gray-50;
+}
+
+.prose :where(td):not(:where([class~="not-prose"] *)) {
+  @apply border border-gray-300 px-4 py-2;
+}
 }

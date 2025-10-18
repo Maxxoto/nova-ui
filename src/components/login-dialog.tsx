@@ -15,7 +15,7 @@ export function LoginDialog({ isOpen, onLogin }: LoginDialogProps) {
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
             {/* Blurry background overlay */}
-            <div className="absolute inset-0 bg-background/80 backdrop-blur-lg" />
+            <div className="absolute inset-0 bg-black/20 backdrop-blur-xs" />
 
             {/* Login dialog */}
             <Card className="relative z-[101] w-full max-w-md">

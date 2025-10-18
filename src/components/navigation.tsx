@@ -3,13 +3,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Brain, MessageSquare, BookOpen, User, ChevronLeft, ChevronRight, Database, Blocks } from "lucide-react";
+import { Brain, MessageSquare, BookOpen, User, ChevronLeft, ChevronRight, Database, Blocks, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSidebarStore } from "@/stores/sidebar-store";
+import { useAuthStore } from "@/stores/auth-store";
 
 export function Navigation() {
     const pathname = usePathname();
     const { isCollapsed, toggleSidebar } = useSidebarStore();
+    const { logout } = useAuthStore();
 
     const navItems = [
         {
@@ -90,6 +92,30 @@ export function Navigation() {
                         </Button>
                     );
                 })}
+
+                {/* Logout Button */}
+                <div className="pt-4 border-t">
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={logout}
+                        className={cn(
+                            "w-full justify-start h-10 text-destructive hover:text-destructive hover:bg-destructive/10 cursor-pointer",
+                            isCollapsed ? "px-2" : "px-3"
+                        )}
+                    >
+                        <LogOut className={cn(
+                            "h-4 w-4 shrink-0",
+                            isCollapsed ? "mr-0" : "mr-2"
+                        )} />
+                        <span className={cn(
+                            "transition-opacity",
+                            isCollapsed ? "opacity-0 w-0" : "opacity-100 w-auto"
+                        )}>
+                            Logout
+                        </span>
+                    </Button>
+                </div>
             </div>
         </div>
     );

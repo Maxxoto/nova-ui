@@ -279,16 +279,6 @@ export function ChatInterface() {
                     isStreaming={!message.isUser && message.id === streamingMessageId}
                   />
                 ))}
-                {isLoading && activeSession?.messages.length === 0 && (
-                  <ChatMessage
-                    message="..."
-                    isUser={false}
-                    timestamp={new Date()}
-                    avatarUrl="/images/avatars/nova-avatar.jpeg"
-                    personaName={currentPersona.name}
-                    avatarFallback={currentPersona.name}
-                  />
-                )}
                 {!activeSession?.messages.length && (
                   <div className="text-center py-12 text-muted-foreground">
                     <p>Start a conversation with Nova</p>

@@ -35,28 +35,26 @@ export function ChatMessage({
     }
 
     if (isStreaming) {
-      setDisplayedMessage("");
-      setIsTyping(true);
+      // For streaming, update immediately when message changes
+      // This handles fast chunks without artificial delays
+      setDisplayedMessage(message);
       
-      let currentIndex = 0;
-      const messageLength = message.length;
-      
-      const typeWriter = () => {
-        if (currentIndex < messageLength) {
-          setDisplayedMessage(message.substring(0, currentIndex + 1));
-          currentIndex++;
-          setTimeout(typeWriter, 20); // Adjust typing speed here
-        } else {
-          setIsTyping(false);
-        }
-      };
-      
-      typeWriter();
+      // Only show typing indicator if we have content and it's actively streaming
+      setIsTyping(message.length > 0);
     } else {
+      // For non-streaming messages, show full content immediately
       setDisplayedMessage(message);
       setIsTyping(false);
     }
   }, [message, isUser, isStreaming]);
+
+  // Handle smooth animation for initial streaming when message is empty
+  useEffect(() => {
+    if (isStreaming && message.length === 0) {
+      // Show thinking animation when streaming but no content yet
+      setIsTyping(true);
+    }
+  }, [isStreaming, message.length]);
 
   return (
     <div
@@ -79,8 +77,19 @@ export function ChatMessage({
           </p>
         ) : (
           <div className="text-base leading-relaxed prose max-w-none">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{displayedMessage}</ReactMarkdown>
-            {isTyping && (
+            {displayedMessage ? (
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>{displayedMessage}</ReactMarkdown>
+            ) : isStreaming ? (
+              <div className="flex items-center space-x-1 text-muted-foreground">
+                <span className="text-sm">Thinking</span>
+                <div className="flex space-x-1">
+                  <div className="w-1 h-1 bg-current rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <div className="w-1 h-1 bg-current rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <div className="w-1 h-1 bg-current rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                </div>
+              </div>
+            ) : null}
+            {isTyping && displayedMessage && (
               <span className="inline-block w-2 h-4 bg-current ml-1 animate-pulse" />
             )}
           </div>

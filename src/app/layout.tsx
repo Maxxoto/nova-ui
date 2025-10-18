@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Nunito_Sans } from "next/font/google";
 import "./globals.css";
 import { Navigation } from "@/components/navigation";
+import { SidebarLayout } from "@/components/sidebar-layout";
 
 const nunitoSans = Nunito_Sans({
   variable: "--font-nunito-sans",
@@ -24,8 +25,9 @@ export default function RootLayout({
       <body
         className={`${nunitoSans.variable} antialiased`}
       >
-        <Navigation />
-        {children}
+        <SidebarLayout>
+          {children}
+        </SidebarLayout>
       </body>
     </html>
   );

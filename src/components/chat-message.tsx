@@ -27,7 +27,7 @@ export function ChatMessage({
         isUser ? "flex-row-reverse" : "flex-row"
       )}
     >
-      <Avatar className="h-8 w-8">
+      <Avatar className="h-10 w-10">
         <AvatarImage src={avatarUrl} />
         <AvatarFallback className="text-xs">
           {avatarFallback}

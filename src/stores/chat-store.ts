@@ -143,7 +143,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   sessions: initialSessions,
   activeSessionId: "1",
   isFullscreen: false,
-  isSidebarOpen: true,
+  isSidebarOpen: false,
   isLoading: false,
   connectionStatus: "disconnected",
 

@@ -38,11 +38,11 @@ export function ChatMessage({
         )}
       >
         {isUser ? (
-          <p className="text-sm leading-relaxed whitespace-pre-wrap">
+          <p className="text-base leading-relaxed whitespace-pre-wrap">
             {message}
           </p>
         ) : (
-          <div className="text-sm leading-relaxed prose prose-sm max-w-none">
+          <div className="text-base leading-relaxed prose max-w-none">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{message}</ReactMarkdown>
           </div>
         )}

@@ -182,7 +182,7 @@ export function ChatInterface() {
     <div
       className={`flex h-[600px] w-full max-w-7xl mx-auto gap-4 ${
         isFullscreen
-          ? "fixed inset-0 z-50 h-screen w-screen max-w-none m-0 bg-background p-4"
+          ? "fixed inset-0 z-50 h-screen w-screen max-w-none m-0 bg-background p-0"
           : ""
       }`}
     >
@@ -202,7 +202,7 @@ export function ChatInterface() {
       {/* Main Chat Area */}
       <Card className={`flex flex-col flex-1 ${isFullscreen ? "h-full" : ""}`}>
         {/* Header with controls */}
-        <div className="flex items-center justify-between p-4 border-b">
+        <div className={`flex items-center justify-between border-b ${isFullscreen ? "p-2" : "p-4"}`}>
           <div className="flex items-center gap-3">
             <Button
               variant="ghost"
@@ -259,7 +259,7 @@ export function ChatInterface() {
         {/* Messages Area */}
         <div className="flex-1 overflow-hidden">
           <ScrollArea ref={scrollAreaRef} className="h-full">
-            <div className="p-4">
+            <div className={`${isFullscreen ? "p-2" : "p-4"}`}>
               <div className="space-y-4">
                 {activeSession?.messages.map((message) => (
                   <ChatMessage

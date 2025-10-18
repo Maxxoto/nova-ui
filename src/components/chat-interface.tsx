@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -34,6 +34,7 @@ export function ChatInterface() {
   const { currentPersona } = usePersonaStore();
 
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const [streamingMessageId, setStreamingMessageId] = useState<string | null>(null);
 
   const activeSession = sessions.find(
     (session) => session.id === activeSessionId
@@ -66,6 +67,7 @@ export function ChatInterface() {
 
       // Add empty AI message to start streaming
       addMessage(activeSessionId, aiMessage);
+      setStreamingMessageId(aiMessageId);
 
       let accumulatedContent = "";
 
@@ -98,11 +100,13 @@ export function ChatInterface() {
         useChatStore.setState({ sessions: updatedSessions });
       });
 
+      setStreamingMessageId(null);
       return accumulatedContent;
     },
     onError: (error) => {
       console.error("Error sending message:", error);
       setIsLoading(false);
+      setStreamingMessageId(null);
 
       // Update the AI message with error
       if (activeSessionId) {
@@ -133,6 +137,7 @@ export function ChatInterface() {
     },
     onSettled: () => {
       setIsLoading(false);
+      setStreamingMessageId(null);
     },
   });
 
@@ -271,9 +276,10 @@ export function ChatInterface() {
                     avatarFallback={
                       message.isUser ? "You" : currentPersona.name
                     }
+                    isStreaming={!message.isUser && message.id === streamingMessageId}
                   />
                 ))}
-                {isLoading && (
+                {isLoading && activeSession?.messages.length === 0 && (
                   <ChatMessage
                     message="..."
                     isUser={false}

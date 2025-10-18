@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { useEffect, useState } from "react";
 
 interface ChatMessageProps {
   message: string;
@@ -12,6 +13,7 @@ interface ChatMessageProps {
   avatarUrl?: string;
   avatarFallback?: string;
   personaName?: string;
+  isStreaming?: boolean;
 }
 
 export function ChatMessage({
@@ -21,7 +23,41 @@ export function ChatMessage({
   avatarUrl = isUser ? undefined : "/images/avatars/nova-avatar.jpeg",
   personaName,
   avatarFallback = isUser ? "You" : personaName || "Ai",
+  isStreaming = false,
 }: ChatMessageProps) {
+  const [displayedMessage, setDisplayedMessage] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+
+  useEffect(() => {
+    if (isUser) {
+      setDisplayedMessage(message);
+      return;
+    }
+
+    if (isStreaming) {
+      setDisplayedMessage("");
+      setIsTyping(true);
+      
+      let currentIndex = 0;
+      const messageLength = message.length;
+      
+      const typeWriter = () => {
+        if (currentIndex < messageLength) {
+          setDisplayedMessage(message.substring(0, currentIndex + 1));
+          currentIndex++;
+          setTimeout(typeWriter, 20); // Adjust typing speed here
+        } else {
+          setIsTyping(false);
+        }
+      };
+      
+      typeWriter();
+    } else {
+      setDisplayedMessage(message);
+      setIsTyping(false);
+    }
+  }, [message, isUser, isStreaming]);
+
   return (
     <div
       className={cn("flex gap-3 p-4", isUser ? "flex-row-reverse" : "flex-row")}
@@ -39,11 +75,14 @@ export function ChatMessage({
       >
         {isUser ? (
           <p className="text-base leading-relaxed whitespace-pre-wrap">
-            {message}
+            {displayedMessage}
           </p>
         ) : (
           <div className="text-base leading-relaxed prose max-w-none">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{message}</ReactMarkdown>
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{displayedMessage}</ReactMarkdown>
+            {isTyping && (
+              <span className="inline-block w-2 h-4 bg-current ml-1 animate-pulse" />
+            )}
           </div>
         )}
         <p

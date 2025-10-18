@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Brain, MessageSquare, BookOpen, User, ChevronLeft, ChevronRight } from "lucide-react";
+import { Brain, MessageSquare, BookOpen, User, ChevronLeft, ChevronRight, Database } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSidebarStore } from "@/stores/sidebar-store";
 
@@ -16,6 +16,11 @@ export function Navigation() {
       href: "/",
       label: "Chat",
       icon: MessageSquare,
+    },
+    {
+      href: "/knowledge",
+      label: "Knowledge Source",
+      icon: Database,
     },
     {
       href: "/memories",

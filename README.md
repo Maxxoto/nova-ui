@@ -101,7 +101,7 @@ nova-ui-frontend/
 *Modern chat interface with message history and responsive design*
 
 ### Knowledge Management
-![Knowledge Sources](./images/knowledge-page.png)
+![Knowledge Sources](public/images/knowledge.png)
 
 *Manage embedded knowledge sources with indexing status*
 

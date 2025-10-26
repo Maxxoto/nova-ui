@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useEffect, useState } from "react";
+import React from "react";
 
 interface ChatMessageProps {
   message: string;
@@ -38,7 +39,7 @@ export function ChatMessage({
       // For streaming, update immediately when message changes
       // This handles fast chunks without artificial delays
       setDisplayedMessage(message);
-      
+
       // Only show typing indicator if we have content and it's actively streaming
       setIsTyping(message.length > 0);
     } else {
@@ -78,14 +79,63 @@ export function ChatMessage({
         ) : (
           <div className="text-base leading-relaxed prose max-w-none">
             {displayedMessage ? (
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>{displayedMessage}</ReactMarkdown>
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  td: ({ children, ...props }) => (
+                    <td {...props}>
+                      {Array.isArray(children)
+                        ? children.map((child, index) =>
+                            typeof child === "string"
+                              ? child.split("\n").map((line, lineIndex) => (
+                                  <React.Fragment key={lineIndex}>
+                                    {line}
+                                    {lineIndex <
+                                      child.split("\n").length - 1 && <br />}
+                                  </React.Fragment>
+                                ))
+                              : child
+                          )
+                        : children}
+                    </td>
+                  ),
+                  th: ({ children, ...props }) => (
+                    <th {...props}>
+                      {Array.isArray(children)
+                        ? children.map((child, index) =>
+                            typeof child === "string"
+                              ? child.split("\n").map((line, lineIndex) => (
+                                  <React.Fragment key={lineIndex}>
+                                    {line}
+                                    {lineIndex <
+                                      child.split("\n").length - 1 && <br />}
+                                  </React.Fragment>
+                                ))
+                              : child
+                          )
+                        : children}
+                    </th>
+                  ),
+                }}
+              >
+                {displayedMessage}
+              </ReactMarkdown>
             ) : isStreaming ? (
               <div className="flex items-center space-x-1 text-muted-foreground">
                 <span className="text-sm">Thinking</span>
                 <div className="flex space-x-1">
-                  <div className="w-1 h-1 bg-current rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <div className="w-1 h-1 bg-current rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <div className="w-1 h-1 bg-current rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                  <div
+                    className="w-1 h-1 bg-current rounded-full animate-bounce"
+                    style={{ animationDelay: "0ms" }}
+                  />
+                  <div
+                    className="w-1 h-1 bg-current rounded-full animate-bounce"
+                    style={{ animationDelay: "150ms" }}
+                  />
+                  <div
+                    className="w-1 h-1 bg-current rounded-full animate-bounce"
+                    style={{ animationDelay: "300ms" }}
+                  />
                 </div>
               </div>
             ) : null}

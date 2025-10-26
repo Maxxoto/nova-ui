@@ -34,7 +34,9 @@ export function ChatInterface() {
   const { currentPersona } = usePersonaStore();
 
   const scrollAreaRef = useRef<HTMLDivElement>(null);
-  const [streamingMessageId, setStreamingMessageId] = useState<string | null>(null);
+  const [streamingMessageId, setStreamingMessageId] = useState<string | null>(
+    null
+  );
 
   const activeSession = sessions.find(
     (session) => session.id === activeSessionId
@@ -71,34 +73,74 @@ export function ChatInterface() {
 
       let accumulatedContent = "";
 
-      // Use the sendChatMessage function with streaming callback
-      await sendChatMessage(content, (chunk) => {
-        accumulatedContent += chunk;
+      // Get the active session to get thread_id
+      const { sessions } = useChatStore.getState();
+      const activeSession = sessions.find(
+        (session) => session.id === activeSessionId
+      );
+      const thread_id = activeSession?.thread_id;
 
-        // Update the AI message with the accumulated content
-        const { sessions } = useChatStore.getState();
-        const updatedSessions = sessions.map((session) => {
-          if (session.id === activeSessionId) {
-            const updatedMessages = session.messages.map((message) => {
-              if (message.id === aiMessageId) {
-                return {
-                  ...message,
-                  content: accumulatedContent,
-                };
-              }
-              return message;
-            });
-            return {
-              ...session,
-              messages: updatedMessages,
-              lastMessage: accumulatedContent,
-              timestamp: new Date(),
-            };
-          }
-          return session;
-        });
-        useChatStore.setState({ sessions: updatedSessions });
+      // Use the sendChatMessage function with streaming callback
+      console.log("🔍 [DEBUG] Sending chat message:", {
+        sessionId: activeSessionId,
+        hasThreadId: !!thread_id,
+        thread_id: thread_id || "NOT_PROVIDED",
+        contentLength: content.length,
       });
+
+      await sendChatMessage(
+        content,
+        (chunk: string, eventThreadId: string) => {
+          accumulatedContent += chunk;
+
+          // Debug logging for thread_id updates
+          if (eventThreadId && eventThreadId !== thread_id) {
+            console.log(
+              "🔄 [DEBUG] Received new thread_id from backend:",
+              eventThreadId
+            );
+          }
+
+          // Update the AI message with the accumulated content
+          const { sessions } = useChatStore.getState();
+          const updatedSessions = sessions.map((session) => {
+            if (session.id === activeSessionId) {
+              const updatedMessages = session.messages.map((message) => {
+                if (message.id === aiMessageId) {
+                  return {
+                    ...message,
+                    content: accumulatedContent,
+                  };
+                }
+                return message;
+              });
+
+              // Update session thread_id if provided in event
+              const updatedSession = {
+                ...session,
+                messages: updatedMessages,
+                lastMessage: accumulatedContent,
+                timestamp: new Date(),
+              };
+
+              if (eventThreadId && eventThreadId !== session.thread_id) {
+                console.log(
+                  "🔄 [DEBUG] Updating session thread_id from",
+                  session.thread_id,
+                  "to",
+                  eventThreadId
+                );
+                updatedSession.thread_id = eventThreadId;
+              }
+
+              return updatedSession;
+            }
+            return session;
+          });
+          useChatStore.setState({ sessions: updatedSessions });
+        },
+        thread_id
+      );
 
       setStreamingMessageId(null);
       return accumulatedContent;
@@ -146,6 +188,7 @@ export function ChatInterface() {
   };
 
   const handleNewChat = () => {
+    console.log("🔄 [DEBUG] Creating new chat session from frontend");
     createNewSession();
   };
 
@@ -207,7 +250,9 @@ export function ChatInterface() {
       {/* Main Chat Area */}
       <Card className={`flex flex-col flex-1 ${isFullscreen ? "h-full" : ""}`}>
         {/* Header with controls */}
-        <div className={`flex items-center justify-between border-b ${isFullscreen ? "p-2" : "p-4"}`}>
+        <div
+          className={`flex items-center justify-between border-b ${isFullscreen ? "p-2" : "p-4"}`}
+        >
           <div className="flex items-center gap-3">
             <Button
               variant="ghost"
@@ -276,7 +321,9 @@ export function ChatInterface() {
                     avatarFallback={
                       message.isUser ? "You" : currentPersona.name
                     }
-                    isStreaming={!message.isUser && message.id === streamingMessageId}
+                    isStreaming={
+                      !message.isUser && message.id === streamingMessageId
+                    }
                   />
                 ))}
                 {!activeSession?.messages.length && (

@@ -4,6 +4,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { useEffect, useState } from "react";
 import React from "react";
 
@@ -89,6 +91,67 @@ export function ChatMessage({
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{
+                  code: (props) => {
+                    const { node, className, children, ...rest } = props;
+                    const match = /language-(\w+)/.exec(className || "");
+                    const language = match ? match[1] : "";
+                    const codeContent = String(children).replace(/\n$/, "");
+                    const isInline = !className?.includes("language-");
+
+                    if (!isInline && language) {
+                      return (
+                        <div className="my-4 rounded-lg overflow-hidden">
+                          <div className="flex items-center justify-between bg-gray-800 px-4 py-2 text-xs text-gray-300">
+                            <span className="font-medium">{language}</span>
+                            <button
+                              onClick={() => {
+                                navigator.clipboard.writeText(codeContent);
+                              }}
+                              className="hover:text-white transition-colors"
+                            >
+                              Copy
+                            </button>
+                          </div>
+                          <SyntaxHighlighter
+                            style={oneDark}
+                            language={language}
+                            PreTag="div"
+                            customStyle={{
+                              margin: 0,
+                              borderRadius: "0 0 0.5rem 0.5rem",
+                              fontSize: "0.875rem",
+                              lineHeight: "1.25rem",
+                            }}
+                            codeTagProps={{
+                              style: {
+                                fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+                              },
+                            }}
+                          >
+                            {codeContent}
+                          </SyntaxHighlighter>
+                        </div>
+                      );
+                    } else if (!isInline) {
+                      return (
+                        <code
+                          className="bg-gray-100 dark:bg-gray-800 rounded px-1.5 py-0.5 text-sm font-mono"
+                          {...rest}
+                        >
+                          {children}
+                        </code>
+                      );
+                    } else {
+                      return (
+                        <code
+                          className="bg-gray-100 dark:bg-gray-800 rounded px-1.5 py-0.5 text-sm font-mono"
+                          {...rest}
+                        >
+                          {children}
+                        </code>
+                      );
+                    }
+                  },
                   td: ({ children, ...props }) => (
                     <td {...props}>
                       {Array.isArray(children)

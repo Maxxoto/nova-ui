@@ -52,7 +52,7 @@ export function ChatSidebar({
   };
 
   return (
-    <Card className={`flex flex-col h-full ${className}`}>
+    <Card className={`flex flex-col h-full mr-4 shadow-lg ${className}`}>
       {/* Header */}
       <div className="p-4 border-b">
         <div className="flex items-center justify-between mb-4">

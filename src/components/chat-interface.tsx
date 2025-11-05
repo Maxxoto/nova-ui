@@ -228,7 +228,7 @@ export function ChatInterface() {
 
   return (
     <div
-      className={`flex h-[600px] w-full max-w-7xl mx-auto gap-4 ${
+      className={`flex h-[600px] w-full max-w-[1400px] mx-auto gap-6 ${
         isFullscreen
           ? "fixed inset-0 z-50 h-screen w-screen max-w-none m-0 bg-background p-0"
           : ""
@@ -248,10 +248,12 @@ export function ChatInterface() {
       )}
 
       {/* Main Chat Area */}
-      <Card className={`flex flex-col flex-1 ${isFullscreen ? "h-full" : ""}`}>
+      <Card
+        className={`flex flex-col flex-1 border-none shadow-xl ${isFullscreen ? "h-full" : ""}`}
+      >
         {/* Header with controls */}
         <div
-          className={`flex items-center justify-between border-b ${isFullscreen ? "p-2" : "p-4"}`}
+          className={`flex items-center justify-between border-b px-4 py-3 ${isFullscreen ? "p-2" : ""}`}
         >
           <div className="flex items-center gap-3">
             <Button
@@ -281,7 +283,7 @@ export function ChatInterface() {
             <div>
               <h1 className="font-semibold">Nova AI Assistant</h1>
               <p className="text-sm text-muted-foreground">
-                {activeSession?.title || "Chat"}
+                {activeSession?.title || "New Chat"}
                 {connectionStatus === "error" && (
                   <span className="text-red-500 ml-2">(Connection Error)</span>
                 )}
@@ -307,10 +309,12 @@ export function ChatInterface() {
         </div>
 
         {/* Messages Area */}
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 overflow-hidden bg-gray-50 dark:bg-gray-900">
           <ScrollArea ref={scrollAreaRef} className="h-full">
-            <div className={`${isFullscreen ? "p-2" : "p-4"}`}>
-              <div className="space-y-4">
+            <div
+              className={`${isFullscreen ? "p-2" : "p-4"} max-w-6xl mx-auto`}
+            >
+              <div className="space-y-6">
                 {activeSession?.messages.map((message) => (
                   <ChatMessage
                     key={message.id}
@@ -337,11 +341,13 @@ export function ChatInterface() {
         </div>
 
         {/* Input Area */}
-        <ChatInput
-          onSendMessage={handleSendMessage}
-          disabled={isLoading || sendMessageMutation.isPending}
-          placeholder="Ask me anything..."
-        />
+        <div className="p-4 bg-background border-t">
+          <ChatInput
+            onSendMessage={handleSendMessage}
+            disabled={isLoading || sendMessageMutation.isPending}
+            placeholder="Send a message..."
+          />
+        </div>
       </Card>
     </div>
   );

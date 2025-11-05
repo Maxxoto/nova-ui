@@ -59,17 +59,24 @@ export function ChatMessage({
 
   return (
     <div
-      className={cn("flex gap-3 p-4", isUser ? "flex-row-reverse" : "flex-row")}
+      className={cn(
+        "flex gap-4 px-4 py-6",
+        isUser ? "flex-row-reverse" : "flex-row"
+      )}
     >
-      <Avatar className="h-10 w-10">
+      <Avatar className="h-8 w-8">
         <AvatarImage src={avatarUrl} />
-        <AvatarFallback className="text-xs">{avatarFallback}</AvatarFallback>
+        <AvatarFallback className="text-xs font-medium">
+          {avatarFallback}
+        </AvatarFallback>
       </Avatar>
 
       <div
         className={cn(
-          "max-w-[80%] rounded-lg px-4 py-2",
-          isUser ? "bg-primary text-primary-foreground" : "bg-muted"
+          "max-w-[85%] rounded-2xl px-4 py-3",
+          isUser
+            ? "bg-blue-600 text-white shadow-sm"
+            : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm"
         )}
       >
         {isUser ? (
@@ -121,7 +128,7 @@ export function ChatMessage({
                 {displayedMessage}
               </ReactMarkdown>
             ) : isStreaming ? (
-              <div className="flex items-center space-x-1 text-muted-foreground">
+              <div className="flex items-center space-x-1 text-gray-500 dark:text-gray-400">
                 <span className="text-sm">Thinking</span>
                 <div className="flex space-x-1">
                   <div
@@ -146,8 +153,8 @@ export function ChatMessage({
         )}
         <p
           className={cn(
-            "text-xs mt-1",
-            isUser ? "text-primary-foreground/70" : "text-muted-foreground"
+            "text-xs mt-2",
+            isUser ? "text-blue-100" : "text-gray-500 dark:text-gray-400"
           )}
         >
           {timestamp.toLocaleTimeString("en-US", {

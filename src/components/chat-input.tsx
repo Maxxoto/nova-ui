@@ -36,7 +36,7 @@ export function ChatInput({
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex gap-3 p-4 border-t bg-background max-w-5xl mx-auto"
+      className="flex gap-3 p-4 bg-background dark:bg-[oklch(0.205_0_0)] max-w-5xl mx-auto"
     >
       <div className="flex-1">
         <Textarea

@@ -309,7 +309,7 @@ export function ChatInterface() {
         </div>
 
         {/* Messages Area */}
-        <div className="flex-1 overflow-hidden bg-gray-50 dark:bg-gray-900">
+        <div className="flex-1 overflow-hidden bg-gray-50 dark:bg-[oklch(0.205_0_0)]">
           <ScrollArea ref={scrollAreaRef} className="h-full">
             <div
               className={`${isFullscreen ? "p-2" : "p-4"} max-w-6xl mx-auto`}
@@ -341,7 +341,7 @@ export function ChatInterface() {
         </div>
 
         {/* Input Area */}
-        <div className="p-4 bg-background border-t">
+        <div className="p-4 bg-background dark:bg-[oklch(0.205_0_0)] ">
           <ChatInput
             onSendMessage={handleSendMessage}
             disabled={isLoading || sendMessageMutation.isPending}

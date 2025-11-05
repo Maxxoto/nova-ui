@@ -75,7 +75,7 @@ export function ChatMessage({
         className={cn(
           "max-w-[85%] rounded-2xl px-4 py-3",
           isUser
-            ? "bg-blue-600 text-white shadow-sm"
+            ? "bg-gray-700 text-white shadow-sm"
             : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm"
         )}
       >
@@ -154,7 +154,7 @@ export function ChatMessage({
         <p
           className={cn(
             "text-xs mt-2",
-            isUser ? "text-blue-100" : "text-gray-500 dark:text-gray-400"
+            isUser ? "text-gray-300" : "text-gray-500 dark:text-gray-400"
           )}
         >
           {timestamp.toLocaleTimeString("en-US", {

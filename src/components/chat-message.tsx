@@ -4,6 +4,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import remarkEmoji from "remark-emoji";
+import remarkMath from "remark-math";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { useEffect, useState } from "react";
@@ -106,8 +108,32 @@ export function ChatMessage({
             )}
             {displayedMessage ? (
               <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
+                remarkPlugins={[remarkGfm, remarkEmoji, remarkMath]}
                 components={{
+                  // Handle ordered lists properly
+                  ol: ({ children, ...props }) => (
+                    <ol className="list-decimal list-inside space-y-1 my-2" {...props}>
+                      {children}
+                    </ol>
+                  ),
+                  // Handle unordered lists properly
+                  ul: ({ children, ...props }) => (
+                    <ul className="list-disc list-inside space-y-1 my-2" {...props}>
+                      {children}
+                    </ul>
+                  ),
+                  // Handle list items
+                  li: ({ children, ...props }) => (
+                    <li className="ml-4" {...props}>
+                      {children}
+                    </li>
+                  ),
+                  // Handle paragraphs with proper spacing
+                  p: ({ children, ...props }) => (
+                    <p className="mb-2" {...props}>
+                      {children}
+                    </p>
+                  ),
                   code: (props) => {
                     const { node, className, children, ...rest } = props;
                     const match = /language-(\w+)/.exec(className || "");
@@ -153,7 +179,7 @@ export function ChatMessage({
                     } else if (!isInline) {
                       return (
                         <code
-                          className="bg-gray-100 dark:bg-gray-800 rounded px-1.5 py-0.5 text-sm font-mono"
+                          className="bg-gray-100 dark:bg-gray-800 rounded px-1.5 py-0.5 text-sm font-mono block my-2"
                           {...rest}
                         >
                           {children}

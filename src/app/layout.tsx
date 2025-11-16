@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Nunito_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { SidebarLayout } from "@/components/sidebar-layout";
 import { AuthProvider } from "@/components/auth-provider";
@@ -7,10 +7,10 @@ import { SessionProvider } from "@/components/session-provider";
 import { ReactQueryProvider } from "@/components/react-query-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 
-const nunitoSans = Nunito_Sans({
-  variable: "--font-nunito-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${nunitoSans.variable} antialiased`} suppressHydrationWarning>
+      <body className={`${inter.variable} antialiased`} suppressHydrationWarning>
         <ReactQueryProvider>
           <SessionProvider>
             <AuthProvider>

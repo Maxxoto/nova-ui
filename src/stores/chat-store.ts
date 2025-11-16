@@ -163,6 +163,7 @@ const deserializeSessions = (sessions: any[]): ChatSession[] => {
     messages: session.messages.map((message: any) => ({
       ...message,
       timestamp: new Date(message.timestamp),
+      // thinkingProcess is already a string, no conversion needed
     })),
   }));
 };

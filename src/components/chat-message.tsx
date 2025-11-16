@@ -8,6 +8,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { useEffect, useState } from "react";
 import React from "react";
+import { ThinkingDropdown } from "./thinking-dropdown";
 
 interface ChatMessageProps {
   message: string;
@@ -30,23 +31,36 @@ export function ChatMessage({
 }: ChatMessageProps) {
   const [displayedMessage, setDisplayedMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [parsedThinking, setParsedThinking] = useState<string | null>(null);
 
+  // Parse thinking tokens from message content
   useEffect(() => {
     if (isUser) {
       setDisplayedMessage(message);
+      setParsedThinking(null);
       return;
     }
 
+    // Extract thinking content from <think> tags
+    const thinkMatch = message.match(/<think>([\s\S]*?)<\/think>/);
+    let cleanMessage = message;
+    let extractedThinking = null;
+
+    if (thinkMatch) {
+      extractedThinking = thinkMatch[1].trim();
+      // Remove thinking tags from the main message
+      cleanMessage = message.replace(/<think>[\s\S]*?<\/think>/, "").trim();
+    }
+
+    setParsedThinking(extractedThinking);
+
     if (isStreaming) {
       // For streaming, update immediately when message changes
-      // This handles fast chunks without artificial delays
-      setDisplayedMessage(message);
-
-      // Only show typing indicator if we have content and it's actively streaming
-      setIsTyping(message.length > 0);
+      setDisplayedMessage(cleanMessage);
+      setIsTyping(cleanMessage.length > 0);
     } else {
       // For non-streaming messages, show full content immediately
-      setDisplayedMessage(message);
+      setDisplayedMessage(cleanMessage);
       setIsTyping(false);
     }
   }, [message, isUser, isStreaming]);
@@ -87,6 +101,9 @@ export function ChatMessage({
           </p>
         ) : (
           <div className="text-base leading-relaxed prose max-w-none">
+            {!isUser && parsedThinking && (
+              <ThinkingDropdown thinkingProcess={parsedThinking} />
+            )}
             {displayedMessage ? (
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
@@ -124,7 +141,8 @@ export function ChatMessage({
                             }}
                             codeTagProps={{
                               style: {
-                                fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+                                fontFamily:
+                                  "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
                               },
                             }}
                           >
@@ -214,6 +232,7 @@ export function ChatMessage({
             )}
           </div>
         )}
+
         <p
           className={cn(
             "text-xs mt-2",

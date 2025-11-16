@@ -53,7 +53,7 @@ export function ChatInput({
         type="submit"
         size="icon"
         disabled={disabled || !message.trim()}
-        className="h-12 w-12 rounded-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:text-gray-500 dark:disabled:bg-gray-600 dark:disabled:text-gray-400"
+        className="h-12 w-12 rounded-full hover:bg-gray-500 disabled:bg-gray-300 disabled:text-gray-500 dark:disabled:bg-gray-600 dark:disabled:text-gray-400 dark:bg-white-400!"
       >
         <Send className="h-4 w-4" />
       </Button>

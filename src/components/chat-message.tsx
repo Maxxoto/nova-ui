@@ -92,11 +92,11 @@ export function ChatMessage({
           "max-w-[85%] rounded-2xl px-4 py-3",
           isUser
             ? "bg-gray-700 text-white shadow-sm"
-            : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm"
+            : "bg-white dark:bg-transparent  border-gray-200 dark:border-gray-700 shadow-sm"
         )}
       >
         {isUser ? (
-          <p className="text-base leading-relaxed whitespace-pre-wrap">
+          <p className="text-base/10 leading-relaxed whitespace-pre-wrap">
             {displayedMessage}
           </p>
         ) : (

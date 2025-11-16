@@ -26,14 +26,14 @@ export function ThinkingDropdown({
         variant="ghost"
         size="sm"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 h-8 px-0! text-xs text-muted-foreground hover:text-foreground"
+        className="flex items-center gap-2 h-8 px-0! text-xs text-muted-foreground hover:text-foreground border"
       >
-        <Brain className="h-3 w-3" />
+        <Brain className="h-3 w-3 ml-2" />
         <span>Thinking Process</span>
         {isOpen ? (
-          <ChevronUp className="h-3 w-3" />
+          <ChevronUp className="h-3 w-3 mr-2" />
         ) : (
-          <ChevronDown className="h-3 w-3" />
+          <ChevronDown className="h-3 w-3 mr-2" />
         )}
       </Button>
 

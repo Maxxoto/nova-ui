@@ -118,6 +118,8 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-size: 15px;
+    font-weight: 500;
   }
   /* Markdown table styling for AI responses */
   .prose table {
